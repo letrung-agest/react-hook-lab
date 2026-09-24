@@ -1,19 +1,20 @@
 import { useMemo, useState } from "react";
-const products = [
-  { id: 1, name: "Laptop", price: 2000 },
-  { id: 2, name: "Phone", price: 1000 },
-  { id: 3, name: "Mouse", price: 50 },
-  { id: 4, name: "Keyboard", price: 100 },
-];
+import ProductList from "./ProductList";
 
 export default function UseMemoTab() {
   const [count, setCount] = useState(0);
   const [theme, setTheme] = useState("light");
+  const products = useMemo(() => [
+    { id: 1, name: "Laptop", price: 2000 },
+    { id: 2, name: "Phone", price: 1000 },
+    { id: 3, name: "Mouse", price: 50 },
+    { id: 4, name: "Keyboard", price: 100 },
+  ], []);
 
   const [search, setSearch] = useState("");
-  const opt = {
+  const opt = useMemo(() => ({
     theme,
-  };
+  }), [theme]);
 
   const result = useMemo(() => {
     console.log("Calculation...");
@@ -49,13 +50,7 @@ export default function UseMemoTab() {
       <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} />
 
       <h3>Product list</h3>
-      <ul>
-        {filterPro.map(p => (
-          <li key={p.id}>
-            {p.name} - ${p.price}
-          </li>
-        ))}
-      </ul>
+      <ProductList products={products} />
     </div>
   );
 }
